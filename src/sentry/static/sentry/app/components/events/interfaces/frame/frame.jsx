@@ -1,33 +1,25 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import {css} from '@emotion/core';
 import scrollToElement from 'scroll-to-element';
 
 import styled from '@emotion/styled';
 import {defined, objectIsEmpty} from 'app/utils';
 import {t} from 'app/locale';
-import ClippedBox from 'app/components/clippedBox';
-import ContextLine from 'app/components/events/interfaces/contextLine';
-import FrameRegisters from 'app/components/events/interfaces/frameRegisters';
-import FrameVariables from 'app/components/events/interfaces/frameVariables';
 import TogglableAddress from 'app/components/events/interfaces/togglableAddress';
 import PackageLink from 'app/components/events/interfaces/packageLink';
 import PackageStatus from 'app/components/events/interfaces/packageStatus';
 import StrictClick from 'app/components/strictClick';
 import Tooltip from 'app/components/tooltip';
-import OpenInContextLine from 'app/components/events/interfaces/openInContextLine';
 import space from 'app/styles/space';
-import ErrorBoundary from 'app/components/errorBoundary';
 import withSentryAppComponents from 'app/utils/withSentryAppComponents';
 import {DebugMetaActions} from 'app/stores/debugMetaStore';
 import {SymbolicatorStatus} from 'app/components/events/interfaces/types';
 import InlineSvg from 'app/components/inlineSvg';
 import {combineStatus} from 'app/components/events/interfaces/debugmeta';
-import {Assembly} from 'app/components/events/interfaces/assembly';
-import {parseAssembly} from 'app/components/events/interfaces/utils';
 
 import FrameDefaultTitle from './frameDefaultTitle';
+import FrameContext from './frameContext';
 import FrameFunctionName from './frameFunctionName';
 import getPlatform from './getPlatform';
 
@@ -143,102 +135,6 @@ export class Frame extends React.Component {
   preventCollapse = evt => {
     evt.stopPropagation();
   };
-
-  getSentryAppComponents() {
-    return this.props.components;
-  }
-
-  renderContext() {
-    const data = this.props.data;
-    let context = '';
-    const {isExpanded} = this.state;
-
-    let outerClassName = 'context';
-    if (isExpanded) {
-      outerClassName += ' expanded';
-    }
-
-    const hasContextSource = this.hasContextSource();
-    const hasContextVars = this.hasContextVars();
-    const hasContextRegisters = this.hasContextRegisters();
-    const hasAssembly = this.hasAssembly();
-    const expandable = this.isExpandable();
-
-    const contextLines = isExpanded
-      ? data.context
-      : data.context && data.context.filter(l => l[0] === data.lineNo);
-
-    if (hasContextSource || hasContextVars || hasContextRegisters || hasAssembly) {
-      const startLineNo = hasContextSource ? data.context[0][0] : '';
-      context = (
-        <ol start={startLineNo} className={outerClassName}>
-          {defined(data.errors) && (
-            <li className={expandable ? 'expandable error' : 'error'} key="errors">
-              {data.errors.join(', ')}
-            </li>
-          )}
-
-          {data.context &&
-            contextLines.map((line, index) => {
-              const isActive = data.lineNo === line[0];
-              const components = this.getSentryAppComponents();
-              const hasComponents = isActive && components.length > 0;
-              const contextLineCss = hasComponents
-                ? css`
-                    background: inherit;
-                    padding: 0;
-                    text-indent: 20px;
-                    z-index: 1000;
-                  `
-                : css`
-                    background: inherit;
-                    padding: 0 20px;
-                  `;
-              return (
-                <ContextLine
-                  key={index}
-                  line={line}
-                  isActive={isActive}
-                  css={contextLineCss}
-                >
-                  {hasComponents && (
-                    <ErrorBoundary mini>
-                      <OpenInContextLine
-                        key={index}
-                        lineNo={line[0]}
-                        filename={data.filename}
-                        components={components}
-                      />
-                    </ErrorBoundary>
-                  )}
-                </ContextLine>
-              );
-            })}
-
-          {(hasContextRegisters || hasContextVars) && (
-            <ClippedBox clipHeight={100}>
-              {hasContextRegisters && (
-                <FrameRegisters data={this.props.registers} key="registers" />
-              )}
-              {hasContextVars && <FrameVariables data={data.vars} key="vars" />}
-            </ClippedBox>
-          )}
-
-          {hasAssembly && (
-            <Assembly {...parseAssembly(data.package)} filePath={data.absPath} />
-          )}
-        </ol>
-      );
-    } else if (this.props.emptySourceNotation) {
-      context = (
-        <div className="empty-context">
-          <span className="icon icon-exclamation" />
-          <p>{t('No additional details are available for this frame.')}</p>
-        </div>
-      );
-    }
-    return context;
-  }
 
   renderExpander() {
     if (!this.isExpandable()) {
@@ -442,12 +338,20 @@ export class Frame extends React.Component {
     });
     const props = {className};
 
-    const context = this.renderContext();
-
     return (
       <li {...props}>
         {this.renderLine()}
-        {context}
+        <FrameContext
+          data={data}
+          registers={this.props.registers}
+          components={this.props.components}
+          hasContextSource={this.hasContextSource()}
+          hasContextVars={this.hasContextVars()}
+          hasContextRegisters={this.hasContextRegisters()}
+          hasAssembly={this.hasAssembly()}
+          expandable={this.isExpandable()}
+          isExpanded={this.state.isExpanded}
+        />
       </li>
     );
   }

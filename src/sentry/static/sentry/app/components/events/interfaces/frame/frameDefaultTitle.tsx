@@ -70,9 +70,6 @@ const FrameDefaultTitle = ({data, platform}: Props) => {
       framePlatform === 'java' || framePlatform === 'csharp';
 
     const pathName = getPathName(shouldPrioritizeModuleName);
-
-    console.log('pathName', pathName);
-
     const enablePathTooltip = defined(data.absPath) && data.absPath !== pathName.value;
 
     title.push(

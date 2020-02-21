@@ -11,7 +11,7 @@ type Props = {
 const FrameVariables = ({data}: Props) => {
   // make sure that clicking on the variables does not actually do
   // anything on the containing element.
-  const preventToggling = () => (event: React.MouseEvent<HTMLTableElement>) => {
+  const handlePreventToggling = () => (event: React.MouseEvent<HTMLTableElement>) => {
     event.stopPropagation();
   };
 
@@ -32,7 +32,9 @@ const FrameVariables = ({data}: Props) => {
 
   const transformedData = getTransformedData();
 
-  return <KeyValueList data={transformedData} onClick={preventToggling} isContextData />;
+  return (
+    <KeyValueList data={transformedData} onClick={handlePreventToggling} isContextData />
+  );
 };
 
 export default FrameVariables;

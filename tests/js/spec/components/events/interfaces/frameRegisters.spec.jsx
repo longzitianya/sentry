@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'sentry-test/enzyme';
 
 import FrameRegisters from 'app/components/events/interfaces/frameRegisters/frameRegisters';
-import RegisterValue from 'app/components/events/interfaces/frameRegisters/registerValue';
+import RegisterValue from 'app/components/events/interfaces/frameRegisters/frameRegisters/registerValue';
 
 describe('FrameRegisters', () => {
   it('should render registers', () => {

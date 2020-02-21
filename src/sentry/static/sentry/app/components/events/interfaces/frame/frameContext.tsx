@@ -6,7 +6,7 @@ import {t} from 'app/locale';
 import {defined} from 'app/utils';
 import ClippedBox from 'app/components/clippedBox';
 import ContextLine from 'app/components/events/interfaces/contextLine';
-import FrameRegisters from 'app/components/events/interfaces/frameRegisters';
+import FrameRegisters from 'app/components/events/interfaces/frameRegisters/frameRegisters';
 import FrameVariables from 'app/components/events/interfaces/frameVariables';
 import ErrorBoundary from 'app/components/errorBoundary';
 import {Assembly} from 'app/components/events/interfaces/assembly';

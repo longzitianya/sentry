@@ -21,6 +21,7 @@ type Props = {
   hasContextSource?: boolean;
   hasContextVars?: boolean;
   hasContextRegisters?: boolean;
+  emptySourceNotation?: boolean;
   hasAssembly?: boolean;
   expandable?: boolean;
   registers: {[key: string]: string};
@@ -34,17 +35,18 @@ const FrameContext = ({
   isExpanded = false,
   hasAssembly = false,
   expandable = false,
+  emptySourceNotation = false,
   registers,
   components,
   frame,
 }: Props) => {
   if (!hasContextSource && !hasContextVars && !hasContextRegisters && !hasAssembly) {
-    return (
+    return emptySourceNotation ? (
       <div className="empty-context">
         <span className="icon icon-exclamation" />
         <p>{t('No additional details are available for this frame.')}</p>
       </div>
-    );
+    ) : null;
   }
 
   const getContextLines = () => {

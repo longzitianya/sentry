@@ -348,6 +348,7 @@ export class Frame extends React.Component {
           hasContextSource={this.hasContextSource()}
           hasContextVars={this.hasContextVars()}
           hasContextRegisters={this.hasContextRegisters()}
+          emptySourceNotation={this.props.emptySourceNotation}
           hasAssembly={this.hasAssembly()}
           expandable={this.isExpandable()}
           isExpanded={this.state.isExpanded}

@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'sentry-test/enzyme';
 
 import FrameRegisters from 'app/components/events/interfaces/frameRegisters/frameRegisters';
-import RegisterValue from 'app/components/events/interfaces/frameRegisters/frameRegisters/registerValue';
+import FrameRegisterValue from 'app/components/events/interfaces/frameRegisters/frameRegisterValue';
 
 describe('FrameRegisters', () => {
   it('should render registers', () => {
@@ -32,7 +32,7 @@ describe('RegisterValue', () => {
   let wrapper;
   describe('with string value', () => {
     beforeEach(() => {
-      wrapper = mount(<RegisterValue value="0x000000000000000a" />);
+      wrapper = mount(<FrameRegisterValue value="0x000000000000000a" />);
     });
 
     it('should display the hexadecimal value', () => {
@@ -47,7 +47,7 @@ describe('RegisterValue', () => {
 
   describe('with numeric value', () => {
     beforeEach(() => {
-      wrapper = mount(<RegisterValue value={10} />);
+      wrapper = mount(<FrameRegisterValue value={10} />);
     });
 
     it('should display the hexadecimal value', () => {
@@ -62,7 +62,7 @@ describe('RegisterValue', () => {
 
   describe('with unknown value', () => {
     beforeEach(() => {
-      wrapper = mount(<RegisterValue value="xyz" />);
+      wrapper = mount(<FrameRegisterValue value="xyz" />);
     });
 
     it('should display the hexadecimal value', () => {

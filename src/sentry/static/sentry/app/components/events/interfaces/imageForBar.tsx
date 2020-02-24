@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
 
-import {FunctionName} from 'app/components/events/interfaces/frame/frame';
+import styled from '@emotion/styled';
+import FrameFunctionName from 'app/components/events/interfaces/frame/frameFunctionName';
+import {Frame} from 'app/components/events/interfaces/frame/types';
 import space from 'app/styles/space';
 import {t} from 'app/locale';
 
 type Props = {
-  frame: object;
+  frame: Frame;
   onShowAllImages: () => void;
 };
 
@@ -16,7 +17,7 @@ const ImageForBar = ({frame, onShowAllImages}: Props) => {
     <Wrapper>
       <MatchedFunctionWrapper>
         <MatchedFunctionCaption>{t('Image for: ')}</MatchedFunctionCaption>
-        <FunctionName frame={frame} />
+        <FrameFunctionName frame={frame} />
       </MatchedFunctionWrapper>
       <ResetAddressFilterCaption onClick={onShowAllImages}>
         {t('Show all images')}

@@ -241,7 +241,7 @@ export class Frame extends React.Component {
           <VertCenterWrapper>
             <div>
               {this.renderLeadHint()}
-              <FrameDefaultTitle data={this.props.data} platform={this.props.platform} />
+              <FrameDefaultTitle frame={this.props.data} platform={this.props.platform} />
             </div>
             {this.renderRepeats()}
           </VertCenterWrapper>
@@ -285,7 +285,7 @@ export class Frame extends React.Component {
               maxLengthOfRelativeAddress={maxLengthOfRelativeAddress}
             />
             <span className="symbol">
-              <FrameFunctionName data={data} />{' '}
+              <FrameFunctionName frame={data} />{' '}
               {hint !== null ? (
                 <Tooltip title={hint}>
                   <HintStatus
@@ -342,7 +342,7 @@ export class Frame extends React.Component {
       <li {...props}>
         {this.renderLine()}
         <FrameContext
-          data={data}
+          frame={data}
           registers={this.props.registers}
           components={this.props.components}
           hasContextSource={this.hasContextSource()}

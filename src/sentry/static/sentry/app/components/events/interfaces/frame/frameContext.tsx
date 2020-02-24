@@ -13,10 +13,10 @@ import {Assembly} from 'app/components/events/interfaces/assembly';
 import {parseAssembly} from 'app/components/events/interfaces/utils';
 import OpenInContextLine from 'app/components/events/interfaces/openInContextLine';
 
-import {Data} from './types';
+import {Frame} from './types';
 
 type Props = {
-  data: Data;
+  frame: Frame;
   isExpanded?: boolean;
   hasContextSource?: boolean;
   hasContextVars?: boolean;
@@ -36,7 +36,7 @@ const FrameContext = ({
   expandable = false,
   registers,
   components,
-  data,
+  frame,
 }: Props) => {
   if (!(hasContextSource || hasContextVars || hasContextRegisters || hasAssembly)) {
     return (
@@ -49,26 +49,26 @@ const FrameContext = ({
 
   const getContextLines = () => {
     if (isExpanded) {
-      return data.context;
+      return frame.context;
     }
-    return data.context.filter(l => l[0] === data.lineNo);
+    return frame.context.filter(l => l[0] === frame.lineNo);
   };
 
   const contextLines = getContextLines();
 
-  const startLineNo = hasContextSource ? data.context[0][0] : undefined;
+  const startLineNo = hasContextSource ? frame.context[0][0] : undefined;
 
   return (
     <ol start={startLineNo} className={`context ${isExpanded ? 'expanded' : ''}`}>
-      {defined(data.errors) && (
+      {defined(frame.errors) && (
         <li className={expandable ? 'expandable error' : 'error'} key="errors">
-          {data.errors.join(', ')}
+          {frame.errors.join(', ')}
         </li>
       )}
 
-      {data.context &&
+      {frame.context &&
         contextLines.map((line, index) => {
-          const isActive = data.lineNo === line[0];
+          const isActive = frame.lineNo === line[0];
           const hasComponents = isActive && components.length > 0;
           return (
             <ContextLine
@@ -94,7 +94,7 @@ const FrameContext = ({
                   <OpenInContextLine
                     key={index}
                     lineNo={line[0]}
-                    filename={`Oi ${data.filename}`}
+                    filename={frame.filename}
                     components={components}
                   />
                 </ErrorBoundary>
@@ -106,12 +106,12 @@ const FrameContext = ({
       {(hasContextRegisters || hasContextVars) && (
         <ClippedBox clipHeight={100}>
           {hasContextRegisters && <FrameRegisters data={registers} key="registers" />}
-          {hasContextVars && <FrameVariables data={data.vars} key="vars" />}
+          {hasContextVars && <FrameVariables data={frame.vars} key="vars" />}
         </ClippedBox>
       )}
 
       {hasAssembly && (
-        <Assembly {...parseAssembly(data.package)} filePath={data.absPath} />
+        <Assembly {...parseAssembly(frame.package)} filePath={frame.absPath} />
       )}
     </ol>
   );

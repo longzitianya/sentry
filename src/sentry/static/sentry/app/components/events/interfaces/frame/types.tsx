@@ -1,6 +1,6 @@
 export type PlatformType = 'java' | 'csharp' | 'other';
 
-export type Data = {
+export type Frame = {
   filename: string;
   module: string;
   function?: string;

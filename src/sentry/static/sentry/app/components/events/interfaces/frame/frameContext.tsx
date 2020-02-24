@@ -38,7 +38,7 @@ const FrameContext = ({
   components,
   frame,
 }: Props) => {
-  if (!(hasContextSource || hasContextVars || hasContextRegisters || hasAssembly)) {
+  if (!hasContextSource && !hasContextVars && !hasContextRegisters && !hasAssembly) {
     return (
       <div className="empty-context">
         <span className="icon icon-exclamation" />

@@ -61,7 +61,7 @@ class FrameFunctionName extends React.Component<Props, State> {
       }
     }
 
-    if (frame.rawFunction) {
+    if (typeof valueOutput === 'string' && frame.rawFunction) {
       valueOutput = {
         value: frame.rawFunction,
         meta: getMeta(frame, 'rawFunction'),

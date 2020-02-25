@@ -18,7 +18,7 @@ const FrameVariables = ({data}: Props) => {
   const getTransformedData = (): Array<KeyValueListData> => {
     const transformedData: Array<KeyValueListData> = [];
 
-    const dataKeys = Object.keys(data);
+    const dataKeys = Object.keys(data).reverse();
     for (const key of dataKeys) {
       transformedData.push({
         key,

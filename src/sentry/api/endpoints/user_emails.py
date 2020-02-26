@@ -171,6 +171,10 @@ class UserEmailsEndpoint(UserEndpoint):
         if has_new_username and not User.objects.filter(username__iexact=new_email).exists():
             update_kwargs["username"] = new_email
 
+        # Logout other sessions when changing primary email
+        user.refresh_session_nonce(request._request)
+        update_kwargs["session_nonce"] = user.session_nonce
+
         user.update(**update_kwargs)
 
         logger.info(
